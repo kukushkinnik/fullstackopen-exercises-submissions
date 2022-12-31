@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Error from "./components/Error";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Success from "./components/Success";
 import phoneService from "./services/phones";
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
   const [newPhone, setNewPhone] = useState("");
   const [filter, setFilter] = useState("");
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState();
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     phoneService.getAll().then((allPhones) => setPersons(allPhones));
@@ -51,6 +55,7 @@ function App() {
     } else {
       phoneService.create(newPerson).then((returnedPhone) => {
         setNewName("");
+        setSuccessMessage(`Added ${newPerson.name}`);
         setPersons(persons.concat(returnedPhone));
       });
     }
@@ -74,16 +79,22 @@ function App() {
   const updatePhone = (id, number) => {
     const person = persons.find((person) => person.id === id);
     const newPhone = { ...person, number: number };
-    try {
-      phoneService.update(id, newPhone).then((returnedNote) => {
+
+    phoneService
+      .update(id, newPhone)
+      .then((returnedNote) => {
         console.log(`${newPhone.name}was updated`);
         setPersons(
           persons.map((person) => (person.id !== id ? person : returnedNote))
         );
+      })
+      .catch((error) => {
+        setErrorMessage(`${newPhone.name} was already deleted from the server`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+        setPersons(persons.filter((person) => person.id !== id));
       });
-    } catch (e) {
-      console.error(e);
-    }
   };
 
   const personToShow = showAll
@@ -95,6 +106,8 @@ function App() {
   return (
     <div className="App">
       <h2>Phonebook</h2>
+      <Success message={successMessage} />
+      <Error message={errorMessage} />
       <Filter filter={filter} filtered={filteredList} />
       <br />
       <h3>Add new Person</h3>
