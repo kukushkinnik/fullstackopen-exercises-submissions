@@ -31,7 +31,7 @@ const generateId = () => {
   const endForRange = 1000;
   const currMaxId = Math.max(...phonebook.map((p) => p.id));
   const newId = Math.floor(
-    Math.random() * (endForRange - currMaxId) + currMaxId
+    Math.random() * (endForRange - currMaxId + 1) + currMaxId
   );
   return newId;
 };
@@ -49,7 +49,6 @@ app.get("/api/info", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  console.log(req.params.id);
   const id = Number(req.params.id);
   const person = phonebook.find((person) => person.id === id);
 
