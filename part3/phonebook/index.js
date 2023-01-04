@@ -1,114 +1,55 @@
+require("dotenv").config();
 const express = require("express");
-const morgan = require("morgan");
+const Phone = require("./models/phone");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT;
 
-morgan.token("body", function (req, res) {
-  return JSON.stringify(req.body);
-});
-
+app.use(express.static("build"));
 app.use(express.json());
-app.use(
-  morgan(function (tokens, req, res) {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens["response-time"](req, res),
-      "ms",
-      tokens.body(req, res),
-    ].join(" ");
-  })
-);
-
-let phonebook = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-
-const generateId = () => {
-  const endForRange = 1000;
-  const currMaxId = Math.max(...phonebook.map((p) => p.id));
-  const newId = Math.floor(
-    Math.random() * (endForRange - currMaxId + 1) + currMaxId
-  );
-  return newId;
-};
 
 app.get("/api/persons", (req, res) => {
-  res.json(phonebook);
-});
-
-app.get("/api/info", (req, res) => {
-  const info = `<p>Phonebook has info for ${phonebook.length} ${
-    phonebook.length === 1 ? "person" : "people"
-  }</p>
-  <p>${new Date()}</p>`;
-  res.send(info);
+  Phone.find({}).then((phones) => res.json(phones));
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = phonebook.find((person) => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  Phone.findById(req.params.id).then((person) => res.json(person));
 });
 
 app.post("/api/persons", (req, res) => {
   const body = req.body;
+  //NOT WORKGING
+  // if (!body.name || !body.number) {
+  //   return res.status(404).json({
+  //     error: "field is missing",
+  //   });
+  // }
 
-  if (!body.name || !body.number) {
-    return res.status(404).json({
-      error: "field is missing",
-    });
-  }
+  // const findIfExists = Phone.find((phone) => phone.name === body.name);
 
-  const findIfExists = phonebook.find((person) => person.name === body.name);
+  // if (findIfExists) {
+  //   return res.status(404).json({
+  //     error: "name must be unique",
+  //   });
+  // }
 
-  if (findIfExists) {
-    return res.status(404).json({
-      error: "name must be unique",
-    });
-  }
-
-  const person = {
+  const person = new Phone({
     name: body.name,
     number: body.number,
-    id: generateId(),
-  };
+  });
 
-  phonebook = phonebook.concat(person);
-  res.json(phonebook);
+  person.save().then((savedPhone) => res.json(savedPhone));
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  phonebook = phonebook.filter((person) => person.id !== id);
+//NOT WORKING YET
+// app.delete("/api/persons/:id", (req, res) => {
+//   const query = { id: req.params.id };
+//   console.log(query);
+//   Phone.deleteOne(query);
+//    const id = req.params.id;
+//    phonebook = phonebook.filter((person) => person.id !== id);
 
-  res.status(204).end();
-});
+//   // res.status(204).end();
+// });
 
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
