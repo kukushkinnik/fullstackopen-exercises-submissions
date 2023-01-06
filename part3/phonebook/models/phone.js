@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 require("dotenv").config();
 
 const url = process.env.MONGODB_URI;
@@ -9,8 +10,25 @@ mongoose
   .catch((error) => console.log("Error connecting to MongoDB:", error.message));
 
 const phoneShema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minLength: 3,
+    required: true,
+    unique: true,
+  },
+
+  number: {
+    type: String,
+    minLength: 8,
+    validate: {
+      validator: function (v) {
+        return /(\d{2,3}-)\d{5}/.test(v);
+      },
+      message: (props) =>
+        `${props.value} is not a valid phone number! The right format is {D}DD-DDDDD`,
+    },
+    required: true,
+  },
 });
 
 phoneShema.set("toJSON", {
@@ -20,5 +38,7 @@ phoneShema.set("toJSON", {
     delete returnedObject.__v;
   },
 });
+
+userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("Phone", phoneShema);

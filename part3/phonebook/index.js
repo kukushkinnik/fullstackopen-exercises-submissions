@@ -7,18 +7,6 @@ const PORT = process.env.PORT;
 app.use(express.static("build"));
 app.use(express.json());
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatted id" });
-  }
-
-  next(error);
-};
-
-app.use(errorHandler);
-
 app.get("/api/persons", (req, res) => {
   Phone.find({}).then((phones) => res.json(phones));
 });
@@ -51,30 +39,32 @@ app.get("/info", (req, res) => {
   });
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const body = req.body;
-
-  if (!body.name || !body.number) {
-    return res.status(404).json({
-      error: "field is missing",
-    });
-  }
 
   const person = new Phone({
     name: body.name,
     number: body.number,
   });
 
-  person.save().then((savedPhone) => res.json(savedPhone));
+  person
+    .save()
+    .then((savedPhone) => res.json(savedPhone))
+    .catch((error) => next(error));
 });
 
 app.put("/api/persons", (req, res, next) => {
-  const person = {
-    name: body.name,
-    number: body.number,
-  };
+  const { name, number } = req.body;
 
-  Phone.findByIdAndUpdate(req.body.id, person, { new: true })
+  Phone.findByIdAndUpdate(
+    req.body.id,
+    { name, number },
+    {
+      new: true,
+      runValidators: true,
+      context: "query",
+    }
+  )
     .then((updatedPhone) => res.json(updatedPhone))
     .catch((error) => next(error));
 });
@@ -84,6 +74,18 @@ app.delete("/api/persons/:id", (req, res, next) => {
     .then((result) => res.status(204).end())
     .catch((error) => next(error));
 });
+
+const errorHandler = (error, request, response, next) => {
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
