@@ -9,7 +9,7 @@ mongoose
   .then((result) => console.log("connected to MongoDB"))
   .catch((error) => console.log("Error connecting to MongoDB:", error.message));
 
-const phoneShema = new mongoose.Schema({
+const phoneSchema = new mongoose.Schema({
   name: {
     type: String,
     minLength: 3,
@@ -31,7 +31,7 @@ const phoneShema = new mongoose.Schema({
   },
 });
 
-phoneShema.set("toJSON", {
+phoneSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -39,6 +39,6 @@ phoneShema.set("toJSON", {
   },
 });
 
-userSchema.plugin(uniqueValidator);
+phoneSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("Phone", phoneShema);
+module.exports = mongoose.model("Phone", phoneSchema);
