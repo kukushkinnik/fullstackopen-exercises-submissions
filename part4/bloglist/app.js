@@ -3,7 +3,6 @@ const app = express();
 const { info, error } = require("./utils/logger");
 const { MONGODB_URI } = require("./utils/config");
 const blogRouter = require("./controllers/blog");
-const cors = require("cors");
 const mongoose = require("mongoose");
 const middleware = require("./utils/middleware");
 
@@ -13,7 +12,6 @@ mongoose
   .then(() => info("Connected"))
   .catch((er) => error(er.message));
 
-app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 
