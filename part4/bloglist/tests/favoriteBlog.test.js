@@ -1,5 +1,5 @@
 const favoriteBlog = require("../utils/list_helper").favoriteBlog;
-const { blogZero, blogOne, blogs } = require("./testValues");
+const { blogZero, blogOne, blogs } = require("./testHelper");
 
 describe("Favorite Blog", () => {
   test("If list is empty", () => {

@@ -1,5 +1,5 @@
 const mostBlogs = require("../utils/list_helper").mostBlogs;
-const { blogZero, blogOne, blogs } = require("./testValues");
+const { blogZero, blogOne, blogs } = require("./testHelper");
 
 describe("Most Blogs", () => {
   test("If list contains 0 entries", () => {

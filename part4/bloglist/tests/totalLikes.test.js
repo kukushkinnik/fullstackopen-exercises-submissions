@@ -1,5 +1,5 @@
 const totalLikes = require("../utils/list_helper").totalLikes;
-const { blogZero, blogOne, blogs } = require("./testValues");
+const { blogZero, blogOne, blogs } = require("./testHelper");
 
 describe("Total Likes", () => {
   test("If list contains 0 entries", () => {

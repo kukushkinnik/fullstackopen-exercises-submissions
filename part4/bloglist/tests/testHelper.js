@@ -1,3 +1,5 @@
+const Blog = require("../models/blog");
+
 const blogZero = [];
 
 const blogOne = [
@@ -62,4 +64,17 @@ const blogs = [
   },
 ];
 
-module.exports = { blogZero, blogOne, blogs };
+const blogsInDb = async () => {
+  const blog = await Blog.find({});
+  return blog.map((blog) => blog.toJSON());
+};
+
+const nonExistingId = async () => {
+  const blog = new Blog({ title: "willremovethissoon", author: "some author" });
+  await blog.save();
+  await blog.remove();
+
+  return blog._id.toString();
+};
+
+module.exports = { blogZero, blogOne, blogs, blogsInDb, nonExistingId };

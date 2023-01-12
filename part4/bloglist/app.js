@@ -5,6 +5,7 @@ const { MONGODB_URI } = require("./utils/config");
 const blogRouter = require("./controllers/blog");
 const mongoose = require("mongoose");
 const middleware = require("./utils/middleware");
+require("express-async-errors");
 
 info(`Connecting to MongoDB ${MONGODB_URI}`);
 mongoose
