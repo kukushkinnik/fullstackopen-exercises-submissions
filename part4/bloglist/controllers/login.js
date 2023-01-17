@@ -1,14 +1,16 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const loginRouter = require("experss").Router();
+const loginRouter = require("express").Router();
 const User = require("../models/user");
 
 loginRouter.post("/", async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
+  console.log(user);
+
   const isPasswordCorrect =
-    user === null ? false : bcrypt.compare(password, user.passwordHash);
+    user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
   if (!(user && isPasswordCorrect)) {
     return res.status(401).json({
