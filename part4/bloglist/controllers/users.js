@@ -12,6 +12,7 @@ usersRouter.post("/", async (req, res) => {
 
   const minUserNameLength = 3;
   const minPasswordLength = 3;
+
   const isUserNameEqualMinLength = username < minUserNameLength;
   const isPasswordMinLength = password < minPasswordLength;
 
