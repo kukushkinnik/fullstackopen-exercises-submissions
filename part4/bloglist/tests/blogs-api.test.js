@@ -32,6 +32,24 @@ describe("getting blogs", () => {
 });
 
 describe("adding, updating, deleting blogs", () => {
+  let headers;
+
+  beforeEach(async () => {
+    const newUser = {
+      username: "root",
+      name: "root",
+      password: "password",
+    };
+
+    await api.post("/api/users").send(newUser);
+
+    const result = await api.post("/api/login").send(newUser);
+
+    headers = {
+      Authorization: `bearer ${result.body.token}`,
+    };
+  });
+
   test("a valid blog can be added", async () => {
     const newBlog = {
       title: "Some text",
@@ -39,9 +57,11 @@ describe("adding, updating, deleting blogs", () => {
       url: "Some url",
       likes: 7,
     };
+
     await api
       .post("/api/blogs")
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
@@ -53,13 +73,22 @@ describe("adding, updating, deleting blogs", () => {
   });
 
   test("a blog can be deleted", async () => {
-    const blogsAtStart = await helper.blogsInDb();
-    const blogToDelete = blogsAtStart[0];
+    const newBlog = {
+      title: "The best blog ever",
+      author: "Me",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      likes: 12,
+    };
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api.post("/api/blogs").send(newBlog).set(headers).expect(201);
+
+    const allBlogs = await helper.blogsInDb();
+    const blogToDelete = allBlogs.find((blog) => blog.title === newBlog.title);
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).set(headers).expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.blogs.length - 1);
+    expect(blogsAtEnd).toHaveLength(helper.blogs.length);
 
     const titles = blogsAtEnd.map((blog) => blog.title);
     expect(titles).not.toContain(blogToDelete.title);
@@ -72,6 +101,7 @@ describe("adding, updating, deleting blogs", () => {
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(blogToUpdate)
+      .set(headers)
       .expect(200);
 
     const blogsAtEnd = await helper.blogsInDb();
@@ -86,7 +116,7 @@ describe("adding, updating, deleting blogs", () => {
       likes: 7,
     };
 
-    await api.post("/api/blogs").send(newBlog).expect(400);
+    await api.post("/api/blogs").set(headers).send(newBlog).expect(400);
 
     const blogesAtEnd = await helper.blogsInDb();
 
@@ -105,7 +135,7 @@ describe("adding, updating, deleting blogs", () => {
       url: "Some url",
     };
 
-    await api.post("/api/blogs").send(newBlog).expect(201);
+    await api.post("/api/blogs").send(newBlog).set(headers).expect(201);
 
     const blogsAtEnd = await helper.blogsInDb();
     const lastBlog = blogsAtEnd.at(-1);
