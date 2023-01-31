@@ -8,10 +8,12 @@ const LogIn = ({
   setPassword,
   login,
   notification,
+  visability,
+  setVisability,
 }) => {
   return (
     <div>
-      <h1>Log In </h1>
+      <h2>Log In </h2>
       {notification === "error" && <Notification type={notification} />}
       <form onSubmit={login}>
         <div>

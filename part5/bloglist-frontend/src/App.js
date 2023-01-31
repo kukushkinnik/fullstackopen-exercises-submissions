@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import AddNoteForm from "./components/AddNoteForm";
+import AddNewBlogForm from "./components/AddNewBlogForm";
 import BlogList from "./components/BlogList";
 import LogIn from "./components/LogIn";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -14,6 +15,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState("");
+  const [visability, setVisability] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -36,25 +38,25 @@ const App = () => {
       window.localStorage.setItem("bloglistAppUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
-      setUsername("");
-      setPassword("");
     } catch (error) {
       setNotification("error");
       setTimeout(() => {
         setNotification("");
-      }, 4000);
+        setUsername("");
+        setPassword("");
+      }, 1000);
     }
   };
 
-  const addNewNote = async (e) => {
+  const addNewBlog = async (e) => {
     e.preventDefault();
-    const newNote = {
+    const newBlog = {
       title,
       author,
       url,
     };
     try {
-      const blog = await blogService.create(newNote);
+      const blog = await blogService.create(newBlog);
 
       setBlogs([...blogs, blog]);
       setNotification("success");
@@ -64,7 +66,7 @@ const App = () => {
         setAuthor("");
         setTitle("");
         setURL("");
-      }, 4000);
+      }, 2000);
     } catch (error) {
       console.error(error);
     }
@@ -82,26 +84,33 @@ const App = () => {
 
   return (
     <div>
+      <h1>Blogs App</h1>
       {user === null ? (
-        <LogIn
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-          login={handleLogin}
-          notification={notification}
-        />
+        <Togglable buttonLabel="log in">
+          <LogIn
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            login={handleLogin}
+            notification={notification}
+            visability={visability}
+            setVisability={setVisability}
+          />
+        </Togglable>
       ) : (
         <div>
-          <AddNoteForm
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setURL={setURL}
-            addNote={addNewNote}
-          />
+          <Togglable buttonLabel="new blog">
+            <AddNewBlogForm
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setURL={setURL}
+              addNote={addNewBlog}
+            />
+          </Togglable>
           <BlogList
             blogs={blogs}
             name={user.name}
