@@ -1,21 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Notification from "./Notification";
 
-const LogIn = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  login,
-  notification,
-  visability,
-  setVisability,
-}) => {
+const LogIn = ({ login, notification }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const logIn = (e) => {
+    e.preventDefault();
+    login({ username, password });
+    setUsername("");
+    setPassword("");
+  };
+
   return (
     <div>
       <h2>Log In </h2>
       {notification === "error" && <Notification type={notification} />}
-      <form onSubmit={login}>
+      <form onSubmit={logIn}>
         <div>
           username:
           <input

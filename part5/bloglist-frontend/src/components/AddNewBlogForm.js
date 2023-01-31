@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
-const AddNewBlogForm = ({
-  title,
-  setTitle,
-  author,
-  setAuthor,
-  url,
-  setURL,
-  addNote,
-}) => {
+const AddNewBlogForm = ({ addNote }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setURL] = useState("");
+
+  const addNewBlog = (e) => {
+    e.preventDefault();
+
+    addNote({ title, author, url });
+    setTitle("");
+    setAuthor("");
+    setURL("");
+  };
+
   return (
     <div>
       <h2>Add new</h2>
-      <form onSubmit={addNote}>
+      <form onSubmit={addNewBlog}>
         <label>title:</label>
         <input
           type="text"
