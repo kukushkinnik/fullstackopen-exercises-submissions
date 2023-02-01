@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddNewBlogForm from "./components/AddNewBlogForm";
 import BlogList from "./components/BlogList";
 import LogIn from "./components/LogIn";
@@ -10,6 +10,8 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState("");
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -39,12 +41,13 @@ const App = () => {
   };
 
   const addNewBlog = async (newBlog) => {
+    blogFormRef.current.toggleVisibility();
     try {
       const blog = await blogService.create(newBlog);
 
       setBlogs([...blogs, blog]);
       setNotification("success");
-
+      console.log(blog.author);
       setTimeout(() => {
         setNotification("");
       }, 2000);
@@ -53,7 +56,7 @@ const App = () => {
     }
   };
 
-  const deleteNote = async (id) => {
+  const deleteBlog = async (id) => {
     const blogToDelete = await blogService.deleteBlog(id);
     setBlogs(blogs.filter((blog) => blog.id !== id));
   };
@@ -72,7 +75,7 @@ const App = () => {
         </Togglable>
       ) : (
         <div>
-          <Togglable buttonLabel="new blog">
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <AddNewBlogForm addNote={addNewBlog} />
           </Togglable>
           <BlogList
@@ -80,7 +83,7 @@ const App = () => {
             name={user.name}
             logout={handleLogout}
             type={notification}
-            deleteNote={deleteNote}
+            deleteBlog={deleteBlog}
           />
         </div>
       )}

@@ -1,13 +1,11 @@
 import React from "react";
 import styles from "../styles/Notification.module.css";
 
-const Notification = ({ type, title, author }) => {
+const Notification = ({ type }) => {
   if (type === "success") {
     return (
       <div className={styles.success}>
-        <p>
-          a new blog {title} by {author} added
-        </p>
+        <p>a new blog was added</p>
       </div>
     );
   }

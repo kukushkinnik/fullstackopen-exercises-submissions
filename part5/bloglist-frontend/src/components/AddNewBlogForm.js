@@ -9,6 +9,7 @@ const AddNewBlogForm = ({ addNote }) => {
     e.preventDefault();
 
     addNote({ title, author, url });
+
     setTitle("");
     setAuthor("");
     setURL("");
