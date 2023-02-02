@@ -1,3 +1,4 @@
+import PropType from "prop-types";
 import React, { useState } from "react";
 import Notification from "./Notification";
 
@@ -39,6 +40,14 @@ const LogIn = ({ login, notification }) => {
       </form>
     </div>
   );
+};
+
+LogIn.propType = {
+  login: PropType.func.isRequired,
+  username: PropType.string.isRequired,
+  password: PropType.string.isRequired,
+  setUsername: PropType.func.isRequired,
+  setPassword: PropType.func.isRequired,
 };
 
 export default LogIn;

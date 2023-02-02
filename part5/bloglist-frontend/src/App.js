@@ -59,6 +59,7 @@ const App = () => {
   const deleteBlog = async (id) => {
     const confirmDelete = window.confirm("Do you wish to delete?");
     if (confirmDelete) {
+      // eslint-disable-next-line no-unused-vars
       const blogToDelete = await blogService.deleteBlog(id);
       setBlogs(blogs.filter((blog) => blog.id !== id));
     }
