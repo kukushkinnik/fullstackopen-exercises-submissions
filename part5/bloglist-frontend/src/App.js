@@ -57,8 +57,11 @@ const App = () => {
   };
 
   const deleteBlog = async (id) => {
-    const blogToDelete = await blogService.deleteBlog(id);
-    setBlogs(blogs.filter((blog) => blog.id !== id));
+    const confirmDelete = window.confirm("Do you wish to delete?");
+    if (confirmDelete) {
+      const blogToDelete = await blogService.deleteBlog(id);
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    }
   };
 
   const handleLikes = async (id) => {
