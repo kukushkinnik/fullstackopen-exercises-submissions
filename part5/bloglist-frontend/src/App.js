@@ -61,6 +61,13 @@ const App = () => {
     setBlogs(blogs.filter((blog) => blog.id !== id));
   };
 
+  const handleLikes = async (id) => {
+    const blog = blogs.find((blog) => blog.id === id);
+    const changedBlog = { ...blog, likes: blog.likes + 1 };
+    const updatedBlogs = await blogService.updateLikes(id, changedBlog);
+    setBlogs(blogs.map((blog) => (blog.id !== id ? blog : updatedBlogs)));
+  };
+
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistAppUser");
     setUser(null);
@@ -84,6 +91,7 @@ const App = () => {
             logout={handleLogout}
             type={notification}
             deleteBlog={deleteBlog}
+            like={handleLikes}
           />
         </div>
       )}
