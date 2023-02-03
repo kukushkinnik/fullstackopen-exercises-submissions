@@ -36,5 +36,4 @@ const updateLikes = async (id, updatedBlog) => {
   return response.data;
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, create, deleteBlog, updateLikes, setToken };
