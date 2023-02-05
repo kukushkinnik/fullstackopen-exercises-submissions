@@ -17,13 +17,11 @@ describe("Blog app", function () {
   describe("Login", function () {
     it("login is working", function () {
       cy.contains("log in").click();
-      cy.get("#username").type("test");
-      cy.get("#password").type("test");
-      cy.get("#login_btn").click();
+      cy.login({ username: "test", password: "test" });
       cy.contains("new blog");
     });
 
-    it("faild login", function () {
+    it("failed login", function () {
       cy.contains("log in").click();
       cy.get("#username").type("test");
       cy.get("#password").type("wrong");
@@ -35,26 +33,26 @@ describe("Blog app", function () {
   describe("When logged in", function () {
     beforeEach(function () {
       cy.contains("log in").click();
-      cy.get("#username").type("test");
-      cy.get("#password").type("test");
-      cy.get("#login_btn").click();
+      cy.login({ username: "test", password: "test" });
     });
 
     it("when logged in, new blog can be created", function () {
       cy.get("#toggle_btn").click();
-      cy.get("#title").type("cypress test");
-      cy.get("#author").type("cypress");
-      cy.get("#url").type("cypress test");
-      cy.get("#create_btn").click();
-      cy.contains("a new blog was added");
+      cy.createBlog({
+        title: "cypress test",
+        author: "cypress",
+        url: "cypress test",
+      });
+      cy.contains("cypress test");
     });
 
     it("logged in user can like a blog", function () {
       cy.get("#toggle_btn").click();
-      cy.get("#title").type("cypress test");
-      cy.get("#author").type("cypress");
-      cy.get("#url").type("cypress test");
-      cy.get("#create_btn").click();
+      cy.createBlog({
+        title: "cypress test",
+        author: "cypress",
+        url: "cypress test",
+      });
       cy.get("#viewHide_btn").click();
       cy.get("#like_btn").click();
       cy.contains("likes 1");
