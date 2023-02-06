@@ -44,7 +44,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility();
     try {
       const blog = await blogService.create(newBlog);
-
       setBlogs([...blogs, blog]);
       setNotification("success");
       console.log(blog.author);
@@ -57,11 +56,18 @@ const App = () => {
   };
 
   const deleteBlog = async (id) => {
-    const confirmDelete = window.confirm("Do you wish to delete?");
-    if (confirmDelete) {
-      // eslint-disable-next-line no-unused-vars
-      const blogToDelete = await blogService.deleteBlog(id);
-      setBlogs(blogs.filter((blog) => blog.id !== id));
+    try {
+      const confirmDelete = window.confirm("Do you wish to delete?");
+      if (confirmDelete) {
+        // eslint-disable-next-line no-unused-vars
+        const blogToDelete = await blogService.deleteBlog(id);
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+      }
+    } catch (error) {
+      setNotification("error deleting");
+      setTimeout(() => {
+        setNotification("");
+      }, 1000);
     }
   };
 
@@ -96,6 +102,7 @@ const App = () => {
             type={notification}
             deleteBlog={deleteBlog}
             like={handleLikes}
+            username={user.username}
           />
         </div>
       )}

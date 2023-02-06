@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, name, deleteBlog, handleLikes }) => {
+const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
   const [view, setView] = useState(false);
 
   const hide = { display: view ? "" : "none" };
+
+  const hideDelete = { display: blog.user[0].username !== user ? "none" : "" };
 
   const moreInfo = () => setView(!view);
 
@@ -16,6 +18,7 @@ const Blog = ({ blog, name, deleteBlog, handleLikes }) => {
     marginBottom: 5,
     width: "10%",
   };
+  console.log();
 
   return (
     <div style={blogStyle}>
@@ -23,7 +26,9 @@ const Blog = ({ blog, name, deleteBlog, handleLikes }) => {
       <button id="viewHide_btn" onClick={moreInfo}>
         {view ? "hide" : "view"}
       </button>{" "}
-      <button onClick={() => deleteBlog(blog.id)}>Delete</button>
+      <button style={hideDelete} onClick={() => deleteBlog(blog.id)}>
+        Delete
+      </button>
       <div style={hide}>
         {blog.url}
         <br />

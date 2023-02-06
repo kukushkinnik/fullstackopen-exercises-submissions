@@ -17,6 +17,14 @@ const Notification = ({ type }) => {
       </div>
     );
   }
+
+  if (type === "error deleting") {
+    return (
+      <div className={styles.error}>
+        <p>Can not delete blog</p>
+      </div>
+    );
+  }
 };
 
 export default Notification;

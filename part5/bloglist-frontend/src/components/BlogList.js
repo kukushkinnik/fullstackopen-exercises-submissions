@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import Blog from "./Blog";
 import Notification from "./Notification";
 
-const BlogList = ({ blogs, name, logout, type, deleteBlog, like }) => {
+const BlogList = ({
+  blogs,
+  name,
+  logout,
+  type,
+  deleteBlog,
+  like,
+  username,
+}) => {
   const [displaySorted, setDisplaySorted] = useState(false);
   const sorted = [...blogs];
 
@@ -33,6 +41,7 @@ const BlogList = ({ blogs, name, logout, type, deleteBlog, like }) => {
                 deleteBlog={deleteBlog}
                 id={blog.id}
                 handleLikes={like}
+                user={username}
               />
               <br />
             </div>
@@ -59,6 +68,7 @@ const BlogList = ({ blogs, name, logout, type, deleteBlog, like }) => {
             deleteBlog={deleteBlog}
             id={blog.id}
             handleLikes={like}
+            user={username}
           />
           <br />
         </div>
