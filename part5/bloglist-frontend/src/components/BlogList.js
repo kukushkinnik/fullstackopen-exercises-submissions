@@ -23,7 +23,10 @@ const BlogList = ({
     return (
       <div>
         <p>
-          {name} logged in <button onClick={logout}>Log out</button>
+          {name} logged in{" "}
+          <button id="logout_btn" onClick={logout}>
+            Log out
+          </button>
         </p>
         <h2>blogs</h2>
         <Notification type={type} />
@@ -53,7 +56,10 @@ const BlogList = ({
   return (
     <div>
       <p>
-        {name} logged in <button onClick={logout}>Log out</button>
+        {name} logged in{" "}
+        <button id="logout_btn" onClick={logout}>
+          Log out
+        </button>
       </p>
       <h2>blogs</h2>
       <Notification type={type} />

@@ -62,6 +62,10 @@ const App = () => {
         // eslint-disable-next-line no-unused-vars
         const blogToDelete = await blogService.deleteBlog(id);
         setBlogs(blogs.filter((blog) => blog.id !== id));
+        setNotification("deleted successfully");
+        setTimeout(() => {
+          setNotification("");
+        }, 1000);
       }
     } catch (error) {
       setNotification("error deleting");

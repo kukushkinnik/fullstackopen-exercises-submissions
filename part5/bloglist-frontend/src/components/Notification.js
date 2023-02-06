@@ -10,6 +10,14 @@ const Notification = ({ type }) => {
     );
   }
 
+  if (type === "deleted successfully") {
+    return (
+      <div className={styles.success}>
+        <p>Blog was deleted</p>
+      </div>
+    );
+  }
+
   if (type === "error") {
     return (
       <div className={styles.error}>

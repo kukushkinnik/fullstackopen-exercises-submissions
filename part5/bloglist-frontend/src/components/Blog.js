@@ -26,7 +26,11 @@ const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
       <button id="viewHide_btn" onClick={moreInfo}>
         {view ? "hide" : "view"}
       </button>{" "}
-      <button style={hideDelete} onClick={() => deleteBlog(blog.id)}>
+      <button
+        id="delete_btn"
+        style={hideDelete}
+        onClick={() => deleteBlog(blog.id)}
+      >
         Delete
       </button>
       <div style={hide}>
