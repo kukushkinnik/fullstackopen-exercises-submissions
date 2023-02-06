@@ -30,14 +30,14 @@ const BlogList = ({
         </p>
         <h2>blogs</h2>
         <Notification type={type} />
-        <button onClick={sortByLikes}>
+        <button id="sort" onClick={sortByLikes}>
           sort by {displaySorted ? "default" : "likes"}
         </button>
 
         {sorted
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <div key={blog.id}>
+            <>
               <Blog
                 blog={blog}
                 name={name}
@@ -47,7 +47,7 @@ const BlogList = ({
                 user={username}
               />
               <br />
-            </div>
+            </>
           ))}
       </div>
     );

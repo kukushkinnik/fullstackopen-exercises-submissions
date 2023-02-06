@@ -21,7 +21,7 @@ const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
   console.log();
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {blog.title} {blog.author}{" "}
       <button id="viewHide_btn" onClick={moreInfo}>
         {view ? "hide" : "view"}

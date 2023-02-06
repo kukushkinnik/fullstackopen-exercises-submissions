@@ -94,4 +94,40 @@ describe("Blog app", function () {
       cy.get("html").should("not.contain", "#delete_btn");
     });
   });
+  describe("Blogs ordered by number of likes", function () {
+    beforeEach(function () {
+      cy.login({ username: "test", password: "test" });
+      cy.createBlog({
+        title: "cypress test1",
+        author: "cypress1",
+        url: "cypress test1",
+      });
+
+      cy.createBlog({
+        title: "cypress test2",
+        author: "cypress2",
+        url: "cypress test2",
+      });
+
+      cy.createBlog({
+        title: "cypress test3",
+        author: "cypress3",
+        url: "cypress test3",
+      });
+    });
+    it("sorted by default", function () {
+      cy.get(".blog").eq(0).should("contain", "cypress test1");
+      cy.get(".blog").eq(1).should("contain", "cypress test2");
+      cy.get(".blog").eq(2).should("contain", "cypress test3");
+    });
+
+    it("sorted by amount of likes", function () {
+      cy.get(".blog").eq(2).contains("view").click();
+      cy.get(".blog").eq(2).contains("like").click();
+      cy.get(".blog").eq(2).contains("like").click();
+      cy.contains("sort by likes").click();
+      cy.get(".blog").eq(0).contains("view").click();
+      cy.contains("likes 2");
+    });
+  });
 });
