@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { voting } from "../reducers/anecdoteReducer"
+import { vote } from "../reducers/anecdoteReducer"
 import { voteNotification, hideNotification } from "../reducers/notificationsReducer";
 
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch();
 
-  const vote = (id) => {
-    dispatch(voting(id))
+  const votes = (id) => {
+    dispatch(vote(id, anecdote))
     dispatch(voteNotification(anecdote.content));
 
     setTimeout(() => {
@@ -19,7 +19,7 @@ const Anecdote = ({ anecdote }) => {
     <li>
       {anecdote.content} {" "}
       has {anecdote.votes}
-      <button onClick={() => vote(anecdote.id)}>vote</button>
+      <button onClick={() => votes(anecdote.id)}>vote</button>
     </li>
   )
 }
