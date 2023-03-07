@@ -4,7 +4,7 @@ import Note from "./Note"
 const Notes = ({ notes }) => {
   return (
     <>
-      {notes.map(note => <Note id={note.id} content={note.content} />)}
+      {notes.map(note => <Note key={note.id} content={note.content} />)}
     </>
   )
 }
