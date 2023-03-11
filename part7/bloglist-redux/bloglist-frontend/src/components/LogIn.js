@@ -1,16 +1,22 @@
 import PropType from "prop-types";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setNotification } from "../reducers/notificationReducer";
 import Notification from "./Notification";
 
-const LogIn = ({ login, notification }) => {
+const LogIn = ({ login }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const notification = useSelector(state => state.notification);
+  const dispatch = useDispatch();
 
   const logIn = (e) => {
     e.preventDefault();
     login({ username, password });
+    dispatch(setNotification("Wrong username or password", 2));
     setUsername("");
     setPassword("");
+
   };
 
   return (

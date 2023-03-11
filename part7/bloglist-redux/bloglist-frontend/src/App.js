@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import AddNewBlogForm from "./components/AddNewBlogForm";
 import BlogList from "./components/BlogList";
 import LogIn from "./components/LogIn";
 import Togglable from "./components/Togglable";
-import { setNotification } from "./reducers/notificationReducer";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const notification = useSelector(state => state.notification);
-  const dispatch = useDispatch();
+
   const blogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    const fetchBlogs = async() => {
+      const blogs = await blogService.getAll();
+      setBlogs(blogs);
+    };
+    fetchBlogs();
+    // blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -35,11 +37,7 @@ const App = () => {
       blogService.setToken(user.token);
       setUser(user);
     } catch (error) {
-      dispatch(setNotification("Error has ocured", 2));
-      // setNotification("error");
-      // setTimeout(() => {
-      //   setNotification("");
-      // }, 1000);
+      console.error(error.message);
     }
   };
 
@@ -48,11 +46,6 @@ const App = () => {
     try {
       const blog = await blogService.create(newBlog);
       setBlogs([...blogs, blog]);
-      setNotification("success");
-      console.log(blog.author);
-      setTimeout(() => {
-        setNotification("");
-      }, 2000);
     } catch (error) {
       console.error(error);
     }
@@ -65,16 +58,9 @@ const App = () => {
         // eslint-disable-next-line no-unused-vars
         const blogToDelete = await blogService.deleteBlog(id);
         setBlogs(blogs.filter((blog) => blog.id !== id));
-        setNotification("deleted successfully");
-        setTimeout(() => {
-          setNotification("");
-        }, 1000);
       }
     } catch (error) {
-      setNotification("error deleting");
-      setTimeout(() => {
-        setNotification("");
-      }, 1000);
+      console.error(error.message);
     }
   };
 
@@ -95,7 +81,7 @@ const App = () => {
       <h1>Blogs App</h1>
       {user === null ? (
         <Togglable buttonLabel="log in">
-          <LogIn login={handleLogin} notification={notification} />
+          <LogIn login={handleLogin}  />
         </Togglable>
       ) : (
         <div>
