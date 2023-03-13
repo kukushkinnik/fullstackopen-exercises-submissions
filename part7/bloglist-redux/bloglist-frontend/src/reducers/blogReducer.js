@@ -34,6 +34,13 @@ export const initializeBlogs = () => {
   };
 };
 
+export const addBlog = (newBlog) => {
+  return async dispatch => {
+    const blog = await blogService.create(newBlog);
+    dispatch(appendBlog(blog));
+  };
+};
+
 export const likes = (id, blog) => {
   return async dispatch => {
     const updatedBlog = await blogService.updateLikes(id, { ...blog, likes: blog.likes + 1 });

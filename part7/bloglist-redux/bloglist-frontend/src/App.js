@@ -62,7 +62,7 @@ const App = () => {
       <h1>Blogs App</h1>
       <div>
         <Togglable buttonLabel="new blog" ref={blogFormRef}>
-          {/* <AddNewBlogForm addBlog={addNewBlog} /> */}
+          <AddNewBlogForm  />
         </Togglable>
         <BlogList
           // name={user.name}
