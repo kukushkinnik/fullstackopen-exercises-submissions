@@ -1,17 +1,17 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Blog from "./Blog";
 import Notification from "./Notification";
 
 const BlogList = ({
-  blogs,
   name,
   logout,
   type,
-  deleteBlog,
-  like,
   username,
 }) => {
   const [displaySorted, setDisplaySorted] = useState(false);
+  const blogs = useSelector(state => state.blogs);
+
   const sorted = [...blogs];
 
   const sortByLikes = () => {
@@ -41,9 +41,7 @@ const BlogList = ({
               <Blog
                 blog={blog}
                 name={name}
-                deleteBlog={deleteBlog}
                 id={blog.id}
-                handleLikes={like}
                 user={username}
               />
               <br />
@@ -71,9 +69,7 @@ const BlogList = ({
           <Blog
             blog={blog}
             name={name}
-            deleteBlog={deleteBlog}
             id={blog.id}
-            handleLikes={like}
             user={username}
           />
           <br />

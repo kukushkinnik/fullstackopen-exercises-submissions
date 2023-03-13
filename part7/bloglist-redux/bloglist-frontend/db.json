@@ -1,0 +1,25 @@
+{
+  "blogs": [
+    {
+      "id": 1,
+      "title": "Test1",
+      "author": "Nik",
+      "url": "Test1",
+      "likes": 5
+    },
+    {
+      "id": 2,
+      "title": "Test2",
+      "author": "Nik",
+      "url": "Test2",
+      "likes": 5
+    },
+    {
+      "id": 3,
+      "title": "Test3",
+      "author": "Nik",
+      "url": "Test3",
+      "likes": 5
+    }
+  ]
+}

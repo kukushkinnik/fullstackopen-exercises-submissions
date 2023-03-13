@@ -7,7 +7,7 @@ const store = configureStore({
   reducer: {
     users: userReducer,
     blogs: blogReducer,
-    notification: notificationReducer
+    notifications: notificationReducer
   }
 });
 

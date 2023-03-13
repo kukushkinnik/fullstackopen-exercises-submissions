@@ -1,13 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { likes, deleting } from "../reducers/blogReducer";
 
-const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
+const Blog = ({ blog, name,  user }) => {
   const [view, setView] = useState(false);
+  const dispatch = useDispatch();
 
   const hide = { display: view ? "" : "none" };
 
-  const hideDelete = { display: blog.user[0].username !== user ? "none" : "" };
+  // const hideDelete = { display: blog.user[0].username !== user ? "none" : "" };
 
   const moreInfo = () => setView(!view);
+
+  const like = (id) => {
+    dispatch(likes(id,blog));
+  };
+
+  const deleteBlogPost = (id) => {
+    dispatch(deleting(id));
+  };
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,7 +30,7 @@ const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
     marginBottom: 5,
     width: "10%",
   };
-  console.log();
+
 
   return (
     <div className="blog" style={blogStyle}>
@@ -28,8 +40,8 @@ const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
       </button>{" "}
       <button
         id="delete_btn"
-        style={hideDelete}
-        onClick={() => deleteBlog(blog.id)}
+        // style={hideDelete}
+        onClick={() => deleteBlogPost(blog.id)}
       >
         Delete
       </button>
@@ -37,7 +49,7 @@ const Blog = ({ blog, name, deleteBlog, handleLikes, user }) => {
         {blog.url}
         <br />
         likes {blog.likes}{" "}
-        <button id="like_btn" onClick={() => handleLikes(blog.id)}>
+        <button id="like_btn" onClick={() => like(blog.id)}>
           like
         </button>{" "}
         <br />

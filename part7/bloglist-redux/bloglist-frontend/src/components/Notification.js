@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 import styles from "../styles/Notification.module.css";
 
 const Notification = ({ type }) => {
-  const notification = useSelector(state => state.notification);
+  const notifications = useSelector(state => state.notifications);
 
   if (type === "success") {
     return (
       <div className={styles.success}>
-        <p>{notification}</p>
+        <p>{notifications.message}</p>
       </div>
     );
   }
@@ -16,7 +16,7 @@ const Notification = ({ type }) => {
   if (type === "deleted successfully") {
     return (
       <div className={styles.success}>
-        <p>{notification}</p>
+        <p>{notifications.message}</p>
       </div>
     );
   }
@@ -24,7 +24,7 @@ const Notification = ({ type }) => {
   if (type === "error") {
     return (
       <div className={styles.error}>
-        <p>{notification}</p>
+        <p>{notifications.message}</p>
       </div>
     );
   }
@@ -32,7 +32,7 @@ const Notification = ({ type }) => {
   if (type === "error deleting") {
     return (
       <div className={styles.error}>
-        <p>Can not delete blog</p>
+        <p>{notifications.message}</p>
       </div>
     );
   }

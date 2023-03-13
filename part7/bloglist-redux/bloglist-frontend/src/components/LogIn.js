@@ -7,22 +7,22 @@ import Notification from "./Notification";
 const LogIn = ({ login }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const notification = useSelector(state => state.notification);
+  const notifications = useSelector(state => state.notifications);
   const dispatch = useDispatch();
 
   const logIn = (e) => {
     e.preventDefault();
     login({ username, password });
-    dispatch(setNotification("Wrong username or password", 2));
+    dispatch(setNotification("Wrong username or password", "error", 2));
     setUsername("");
     setPassword("");
-
   };
+
 
   return (
     <div>
       <h2>Log In </h2>
-      {notification === "error" && <Notification type={notification} />}
+      {notifications.type === "error" && <Notification type={notifications.type} />}
       <form onSubmit={logIn}>
         <div>
           username:
