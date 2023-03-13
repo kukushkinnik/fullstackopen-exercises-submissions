@@ -6,11 +6,11 @@ import Notification from "./Notification";
 const BlogList = ({
   name,
   logout,
-  type,
   username,
 }) => {
   const [displaySorted, setDisplaySorted] = useState(false);
   const blogs = useSelector(state => state.blogs);
+  const notifications = useSelector(state => state.notifications);
 
   const sorted = [...blogs];
 
@@ -29,7 +29,7 @@ const BlogList = ({
           </button>
         </p>
         <h2>blogs</h2>
-        <Notification type={type} />
+        <Notification  type={notifications.type}/>
         <button id="sort" onClick={sortByLikes}>
           sort by {displaySorted ? "default" : "likes"}
         </button>
@@ -60,7 +60,7 @@ const BlogList = ({
         </button>
       </p>
       <h2>blogs</h2>
-      <Notification type={type} />
+      <Notification  type={notifications.type}/>
       <button onClick={sortByLikes}>
         sort by {displaySorted ? "default" : "likes"}
       </button>

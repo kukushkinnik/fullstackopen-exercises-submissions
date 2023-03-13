@@ -14,7 +14,8 @@ const blogSlice = createSlice({
     },
     deleteBlog(state, action) {
       const id = action.payload.id;
-      return state.filter(blog => blog.id !== id );
+      const index = state.findIndex(blog =>  blog.id === id);
+      state.splice(index, 1);
     },
     appendBlog(state, action) {
       state.push(action.payload);

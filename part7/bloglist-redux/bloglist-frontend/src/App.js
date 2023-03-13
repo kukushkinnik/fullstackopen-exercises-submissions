@@ -39,19 +39,6 @@ const App = () => {
   //   }
   // };
 
-  // const addNewBlog = async (newBlog) => {
-  //   blogFormRef.current.toggleVisibility();
-  //   try {
-  //     const blog = await blogService.create(newBlog);
-  //     setBlogs([...blogs, blog]);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-
-
-
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistAppUser");
     setUser(null);
