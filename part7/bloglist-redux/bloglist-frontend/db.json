@@ -1,11 +1,18 @@
 {
   "blogs": [
     {
-      "title": "TestTest",
-      "author": "Nik",
-      "url": "TestTest",
+      "title": "test3",
+      "author": "test3",
+      "url": "test3",
       "likes": 0,
       "id": 5
+    },
+    {
+      "title": "test1",
+      "author": "test1",
+      "url": "test1",
+      "likes": 0,
+      "id": 7
     }
   ]
 }

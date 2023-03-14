@@ -16,12 +16,14 @@ const blogSlice = createSlice({
       const id = action.payload.id;
       const index = state.findIndex(blog =>  blog.id === id);
       state.splice(index, 1);
+      return state;
     },
     appendBlog(state, action) {
       state.push(action.payload);
     },
     setBlogs(state, action) {
-      return action.payload;
+      state = action.payload;
+      return state;
     }
   }
 });
@@ -53,6 +55,7 @@ export const deleting = (id) => {
   return async dispatch => {
     await blogService.deleteBlog(id);
     dispatch(deleteBlog(id));
+    dispatch(initializeBlogs());
   };
 };
 
